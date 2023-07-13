@@ -1,0 +1,220 @@
+<%- include('header.ejs')%>
+<h2 class="mb-4"> lets gupshup, <%= user.name %> </h2>
+<script>  var j = 0;</script>
+<div class="row">
+    
+    <div class="col-md-3">
+        <ul class ="userlist">
+           <%
+                for(let i=0;i<users.length;i++){
+                      %>
+                      <li class = "each_user" data-id = "<%= users[i]['_id']%>">
+                        <img src="<%= 'http://localhost:8000/' + users[i]['image']%>" alt="Not Found">
+                         <div class ="user_name" id ="us<%= users[i]['_id']%>name"> <%= users[i]['name']%> </div>
+
+                       <%
+                         
+                       if(users[i]['isonline']==1){
+                        %>
+                        <sup class = "online-status" id = "<%= users[i]['_id']%>-status"> Online </sup>
+                         
+                        <%
+
+                       }else{
+                        %>
+                        <sup class = "offline-status" id = "<%= users[i]['_id']%>-status">Offline </sup>
+                        <%
+                       }
+                       
+                       
+                       
+                       %>
+
+                      </li>
+                      
+                    <%
+                }
+           %>
+        </ul>
+    </div>
+
+    <div class="col-md-9">
+       
+        <h3 class ="start-head"></h3>
+        <div class="chat-section">
+            
+            <div id="chat-container">
+                
+            </div>
+
+            <form action="" id ="chat-form">
+                <input type="text" name="message" placeholder="Enter Your Message" class ="chat-box" id ="message" required>
+                <input type="submit" value="send" class="submit">
+            </form>
+
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+
+ var sender_id = '<%= user._id%>';
+ var receiver_id;
+ var prev_receiver_id=-1;
+ var socket = io('/user-namespace',{
+    auth :{
+        token : '<%= user._id%>'
+    }
+ });
+
+
+
+
+   
+    $(document).ready(function(){
+            $('.each_user').click(function(){
+
+            receiver_id = $(this).attr('data-id');
+
+            if((receiver_id!=prev_receiver_id)){
+             
+                 if(j==1){
+
+                    $("#us"+prev_receiver_id+"name").removeClass('user_name_clicked');
+                    $("#us"+prev_receiver_id+"name").addClass('user_name');
+                
+                }
+            }
+            
+
+             if(j==0){
+               
+
+                $("#us"+receiver_id+"name").removeClass('user_name');
+                $("#us"+receiver_id+"name").addClass('user_name_clicked');
+              
+                prev_receiver_id=receiver_id;
+                $('.start-head').hide();
+                $('.chat-section').show();
+               
+                j=1;
+             }else{
+               
+           
+
+                $("#us"+receiver_id+"name").removeClass('user_name_clicked');
+                $("#us"+receiver_id+"name").addClass('user_name');
+              
+                prev_receiver_id=receiver_id;
+                
+                $('.start-head').show();
+                $('.chat-section').hide();
+                j = 0;
+                
+             }
+          
+             socket.emit('existchat',{ sender_id:sender_id ,receiver_id:receiver_id});
+            
+
+             
+            
+            
+        })
+       
+        
+    })
+
+    socket.on('getonlineuser',function(data){
+        $('#'+data.userid+'-status').text('Online');
+        $('#'+data.userid+'-status').removeClass('offline-status');
+        $('#'+data.userid+'-status').addClass('online-status');
+    })
+
+    socket.on('getofflineuser',function(data){
+        $('#'+data.userid+'-status').text('Online');
+        $('#'+data.userid+'-status').removeClass('online-status');
+        $('#'+data.userid+'-status').addClass('offline-status');
+    })
+
+
+    $('#chat-form').submit(function(event){
+       event.preventDefault();
+       console.log("hello22");
+       var message = $('#message').val();
+       console.log(message);
+       $.ajax({
+         url : '/save-chat',
+         type : 'POST',
+         data : {sender_id :sender_id,receiver_id:receiver_id,message:message},
+         success :function(response){
+            if(response.success){
+                $('#message').val('');
+                console.log(response);
+                let chat  =response.data.message;
+                let html = `<div class ="right"> <h3>`+chat+`</h3></div>`;
+                    $('#chat-container').append(html);
+                    
+
+                    socket.emit('newchat',response.data);
+
+
+                    scroll();
+                
+            }else{
+                alert(data.msg);
+            }
+         }
+
+       })
+    })
+
+
+    socket.on('loadnewchat',function(data){
+
+        if(((sender_id==data.receiver_id) && (receiver_id==data.sender_id))){
+            let chat =data.message;
+            let html = `<div class ="left"> <h3>`+chat+`</h3></div>`;
+            $('#chat-container').append(html);
+        }
+       
+        scroll();
+    })
+
+
+    //load old chats
+
+    socket.on('loadchats',function(data){
+        
+        $('#chat-container').html('');
+
+        var chats =data.chats
+
+        let html ='';
+
+        for(let x=0;x<chats.length;x++){
+            let addClass = 'left';
+            if(chats[x]['sender_id']==sender_id){
+                addClass ='right';
+            }
+
+            html+=`
+            <div class ="`+addClass+`"> <h3>`+chats[x]['message']+`</h3></div>
+            `
+        }
+        $('#chat-container').append(html);
+
+        scroll();
+
+    })
+
+    async function scroll(){
+      var element = await document.getElementById('chat-container');
+      element.scrollTop=element.scrollHeight;
+    }
+    
+
+</script>
+
+<%- include('footer.ejs')%>

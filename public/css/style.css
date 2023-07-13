@@ -1,0 +1,178 @@
+*{
+  margin:0px;
+  padding :0px;
+}
+
+nav{
+  width: 100%;
+  height :70px;
+  line-height: 75px;
+  
+  padding: 4px ,120px;
+  position: relative;
+  background-color: rgb(191, 213, 234);
+}
+
+nav .logo{
+  font-size: 33px;
+  font-weight: bold;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  margin-left: 20px;
+  float: left;
+  color: black;
+  letter-spacing: 1.50px;
+  cursor: pointer;
+}
+
+nav ul{
+  display: flex;
+  flex-direction: row;
+  float: right;
+
+
+}
+
+nav li{
+  list-style: none;
+}
+
+nav li a{
+   font-size: 24px;
+   margin : 20px;
+   padding: 0px,30px;
+   text-decoration: none;
+}
+.mb-4{
+  margin: 15px;
+}
+
+
+
+
+
+
+.row{
+display: flex;
+flex-direction: row;
+}
+
+.userlist li{
+  display: flex;
+  flex-direction: row;
+  margin :40px;
+  
+}
+
+
+.userlist img{
+  width: 100px;
+  height: 100px;
+
+}
+
+.user_name{
+  width: 300px;
+  height: 100px;
+  color: rgb(10, 6, 6);
+  background-color: aliceblue;
+  border-color: black;
+  border-width: 30px;
+ 
+  font-weight: 700;
+  font-family:monospace;
+  text-align: center;
+  font-size: 20px;
+  text-transform: capitalize;
+  cursor:pointer;
+}
+
+.user_name_clicked{
+  width: 300px;
+  height: 100px;
+  color: rgb(10, 6, 6);
+  background-color: rgb(191, 213, 234);
+  border-color: black;
+  border-width: 30px;
+ 
+  font-weight: 700;
+  font-family:monospace;
+  text-align: center;
+  font-size: 20px;
+  text-transform: capitalize;
+  cursor:pointer;
+}
+
+#chat-container{
+  background-color: aliceblue;
+  width: 1300px;
+  height: 600px;
+  margin: 15px;
+  overflow: scroll;
+}
+
+.chat-section{
+  display: none;
+}
+
+.online-status{
+  color: green;
+  font-weight: 800;
+}
+.offline-status{
+  color: rgb(224, 12, 12);
+  font-weight: 800;
+}
+
+.right{
+  width : 30%;
+
+  height:auto;
+  font-size: 15px;
+  border: 0.5mm solid black;
+  margin :10px;
+  border-radius: 8px;
+  padding : 5px;
+ 
+  float:right;
+  clear:both;
+  box-shadow: 1px 1px 8px 1px rgb(27, 141, 94);
+
+
+}
+.left{
+  width : 30%;
+
+  height:auto;
+  font-size: 15px;
+  border:1px solid black;
+  margin :10px;
+  border-radius: 5px;
+  padding : 5px;
+
+  float:left;
+  clear:both;
+  box-shadow: 1px 1px 8px 1px rgb(37, 70, 154);
+
+
+}
+input{
+ font-size: 25px;
+}
+form input{
+  height: 45px;
+  width:380px;
+  padding-left: 18px;
+  border: none;
+  background-color:  aliceblue;
+  font-weight: 600;
+  margin:14px;
+  
+}
+
+.submit{
+  width: 76px;
+  height: 45px;
+  text-align:start;
+  font-size: 20px;
+  background-color: rgb(191, 213, 234);
+}
