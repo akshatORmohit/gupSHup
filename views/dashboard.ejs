@@ -133,7 +133,7 @@
     })
 
     socket.on('getofflineuser',function(data){
-        $('#'+data.userid+'-status').text('Online');
+        $('#'+data.userid+'-status').text('Offline');
         $('#'+data.userid+'-status').removeClass('online-status');
         $('#'+data.userid+'-status').addClass('offline-status');
     })
