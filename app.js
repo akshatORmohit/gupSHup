@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 var mongoose = require('mongoose');
-const port = 8000;
+const port = process.env.PORT;
 mongoose.connect('mongodb+srv://akshatormohit:Rsdkamar@1911@chat-app.8ajnorh.mongodb.net/?retryWrites=true&w=majority');
 
 const  app =require('express')();
